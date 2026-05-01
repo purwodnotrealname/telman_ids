@@ -8,12 +8,23 @@ import pandas as pd
 from sklearn.feature_selection import mutual_info_classif
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler
 
+logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
+log = logging.getLogger(__name__)
+
 DEFAULT_TRAIN_PATH = 'data/UNSW_NB15_training-set.csv'
 DEFAULT_TEST_PATH = 'data/UNSW_NB15_testing-set.csv'
 OUTPUT_DIR = "data/processed"
 
-logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
-log = logging.getLogger(__name__)
+# pre configuration
+ID_COLS = ["id"]
+TARGET_COL = "label"
+CAT_COL = "attack_cat"
+
+CATEGORICAL_FEATURES = ["proto", "service", "state"]
+
+DEFAULT_N_FEATURES = 10
+SMOTE_RANDOM_STATE = 42
+
 
 #load 
 def load_data(train_path: str, test_path: str) -> tuple[pd.DataFrame, pd.FataFrame]:
@@ -53,3 +64,4 @@ def clean_data(train: pd.DataFrame, test: pd.DataFrame) -> tuple[pd.DataFrame, p
     else:
         log.info("no constant columns found")
     return train, test
+
